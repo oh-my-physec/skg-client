@@ -13,30 +13,18 @@
 
   <body>
     <div class="container mt-3">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
-	<a class="navbar-brand">
+      <nav class="navbar navbar-expand-xxl navbar-light bg-light px-4">
+	<a class="navbar-brand mx-auto">
 	  <h2> Secret Key Generation Platform <span class="badge bg-dark">NG</span> </h2>
 	</a>
+	<span> v0.0.1 </span>
       </nav>
     </div>
 
-    <div class="container mt-3 mr-3">
+    <div class="container-fluid mt-3">
       <div class="row align-items-start px-4">
 	<!-- Control panel -->
-	<div class="col">
-	  <!-- Role select -->
-	  <div class="mb-3 row">
-	    <label for="role-form" class="col-sm-4 col-form-label"> Role </label>
-	    <div class="col-sm-8">
-	      <select class="form-select" id="role-form">
-		<option selected> ⚙ Select</option>
-		<option value="alice"> 👩 Alice </option>
-		<option value="bob"> 👨 Bob </option>
-		<option value="eve"> 😈 Eve </option>
-	      </select>
-	    </div>
-	  </div>
-
+	<div class="col-4">
 	  <!-- USRP Server Address -->
 	  <div class="mb-3 row">
 	    <label for="usrp-server-addr-form" class="col-sm-4 col-form-label"> USRP Server Address </label>
@@ -44,34 +32,20 @@
 	      <div class="input-group">
 		<input type="text" class="form-control" id="usrp-server-addr-form" value="192.168.10.3">
 		<button type="button" class="btn btn-outline-dark" id="test-usrp-server-connection-button"
-			onclick="skg_test_connection()">
+			onclick="skg_usrp_server_test_connection()">
 		  Test Connection
 		</button>
 	      </div>
 	    </div>
 	  </div>
 
-	  <!-- CSI Directory -->
+	  <!-- TX Antenna -->
 	  <div class="mb-3 row">
-	    <label for="csi-directory-form" class="col-sm-4 col-form-label"> CSI Directory </label>
+	    <label for="tx-antenna-form" class="col-sm-4 col-form-label"> TX Antenna </label>
 	    <div class="col-sm-8">
-	      <input type="text" class="form-control" id="csi-directory-form" value="/tmp/csi/">
-	    </div>
-	  </div>
-
-	  <!-- Waveform Directory -->
-	  <div class="mb-3 row">
-	    <label for="waveform-directory-form" class="col-sm-4 col-form-label"> Waveform Directory </label>
-	    <div class="col-sm-8">
-	      <input type="text" class="form-control" id="waveform-directory-form" value="/tmp/wave/">
-	    </div>
-	  </div>
-
-	  <!-- Generated Key Directory -->
-	  <div class="mb-3 row">
-	    <label for="generated-key-directory-form" class="col-sm-4 col-form-label"> Key Directory </label>
-	    <div class="col-sm-8">
-	      <input type="text" class="form-control" id="generated-key-directory-form" value="/tmp/key/">
+	      <select class="form-select" id="tx-antenna-form">
+		<option selected value="txrx"> TX/RX </option>
+	      </select>
 	    </div>
 	  </div>
 
@@ -119,6 +93,28 @@
 	    </div>
 	  </div>
 
+	  <!-- TX Samples Per Buffer -->
+	  <div class="mb-3 row">
+	    <label for="usrp-tx-spb-form" class="col-sm-4 col-form-label"> TX Samples/Buffer </label>
+	    <div class="col-sm-8">
+	      <div class="input-group">
+		<input type="text" class="form-control" id="usrp-tx-spb-form" value="300000">
+		<span class="input-group-text"> samples/buffer </span>
+	      </div>
+	    </div>
+	  </div>
+
+	  <!-- RX Antenna -->
+	  <div class="mb-3 row">
+	    <label for="rx-antenna-form" class="col-sm-4 col-form-label"> RX Antenna </label>
+	    <div class="col-sm-8">
+	      <select class="form-select" id="rx-antenna-form">
+		<option selected value="txrx"> TX/RX </option>
+		<option value="rx2"> RX2 </option>
+	      </select>
+	    </div>
+	  </div>
+
 	  <!-- RX Gain -->
 	  <div class="mb-3 row">
 	    <label for="usrp-rx-gain-range-form" class="col-sm-4 col-form-label"> RX Gain </label>
@@ -163,6 +159,54 @@
 	    </div>
 	  </div>
 
+	  <!-- RX Samples Per Buffer -->
+	  <div class="mb-3 row">
+	    <label for="usrp-rx-spb-form" class="col-sm-4 col-form-label"> RX Samples/Buffer </label>
+	    <div class="col-sm-8">
+	      <div class="input-group">
+		<input type="text" class="form-control" id="usrp-rx-spb-form" value="300000">
+		<span class="input-group-text"> samples/buffer </span>
+	      </div>
+	    </div>
+	  </div>
+
+	  <!-- RX Maximum Samples -->
+	  <div class="mb-3 row">
+	    <label for="usrp-rx-maximum-samples-form" class="col-sm-4 col-form-label"> RX Maximum Samples </label>
+	    <div class="col-sm-8">
+	      <div class="input-group">
+		<input type="text" class="form-control" id="usrp-rx-maximum-samples-form" value="5200">
+		<span class="input-group-text"> samples </span>
+	      </div>
+	    </div>
+	  </div>
+
+	  <!-- TX Prefixed Sine Sample/Period -->
+	  <div class="mb-3 row">
+	    <label for="usrp-tx-prefix-sine-length-form" class="col-sm-4 col-form-label">
+	      Guarded SINE Wave Length
+	    </label>
+	    <div class="col-sm-8">
+	      <div class="input-group">
+		<input type="text" class="form-control" id="usrp-tx-prefix-sine-length-form" value="20">
+		<span class="input-group-text"> samples/period </span>
+	      </div>
+	    </div>
+	  </div>
+
+	  <!-- TX Prefixed Sine Periods -->
+	  <div class="mb-3 row">
+	    <label for="usrp-tx-prefix-sine-periods-form" class="col-sm-4 col-form-label">
+	      Guarded SINE Wave Periods
+	    </label>
+	    <div class="col-sm-8">
+	      <div class="input-group">
+		<input type="text" class="form-control" id="usrp-tx-prefix-sine-periods-form" value="20">
+		<span class="input-group-text"> periods </span>
+	      </div>
+	    </div>
+	  </div>
+
 	  <!-- Update and Reset buttons -->
 	  <div class="mb-3 row justify-content-around">
 	    <button type="button" class="btn btn-outline-dark col-sm-3" onclick="skg_load_config()">
@@ -174,18 +218,86 @@
 	    <button type="button" class="btn btn-outline-dark col-sm-3" onclick="skg_reset_config()">
 	      Reset Config
 	    </button>
+
+	    <button type="button" class="btn btn-outline-dark col-sm-3" onclick="skg_shutdown_all_jobs()">
+	      Shutdown All Jobs
+	    </button>
 	  </div>
 	</div>
 
+	<div class="col-4">
+	  <!-- Role select -->
+	  <div class="mb-3 row">
+	    <label for="role-form" class="col-sm-4 col-form-label"> Role </label>
+	    <div class="col-sm-8">
+	      <select class="form-select" id="role-form">
+		<option selected> ⚙ Select</option>
+		<option value="alice"> 👩 Alice </option>
+		<option value="bob"> 👨 Bob </option>
+		<option value="eve"> 😈 Eve </option>
+	      </select>
+	    </div>
+	  </div>
+
+	  <!-- Peer Server Address -->
+	  <div class="mb-3 row">
+	    <label for="peer-server-addr-form" class="col-sm-4 col-form-label"> Peer Server Address </label>
+	    <div class="col-sm-8">
+	      <div class="input-group">
+		<input type="text" class="form-control" id="peer-server-addr-form" value="192.168.10.3">
+		<button type="button" class="btn btn-outline-dark" id="test-peer-server-connection-button"
+			onclick="skg_peer_server_test_connection()">
+		  Test Connection
+		</button>
+	      </div>
+	    </div>
+	  </div>
+
+	  <!-- CSI Directory -->
+	  <div class="mb-3 row">
+	    <label for="csi-directory-form" class="col-sm-4 col-form-label"> Save CSI to </label>
+	    <div class="col-sm-8">
+	      <input type="text" class="form-control" id="csi-directory-form" value="/tmp/csi/">
+	    </div>
+	  </div>
+
+	  <!-- Waveform Directory -->
+	  <div class="mb-3 row">
+	    <label for="waveform-directory-form" class="col-sm-4 col-form-label"> Save Waveform to </label>
+	    <div class="col-sm-8">
+	      <input type="text" class="form-control" id="waveform-directory-form" value="/tmp/wave/">
+	    </div>
+	  </div>
+
+	  <!-- Generated Key Directory -->
+	  <div class="mb-3 row">
+	    <label for="generated-key-directory-form" class="col-sm-4 col-form-label"> Save Generated Keys to </label>
+	    <div class="col-sm-8">
+	      <input type="text" class="form-control" id="generated-key-directory-form" value="/tmp/key/">
+	    </div>
+	  </div>
+
+	  <!-- Update and Reset buttons -->
+	  <div class="mb-3 row justify-content-around">
+	    <button type="button" class="btn btn-outline-dark col-sm-3" onclick="skg_load_config()">
+	      Start
+	    </button>
+	    <button type="button" class="btn btn-outline-dark col-sm-3" onclick="skg_update_config()">
+	      Stop
+	    </button>
+	  </div>
+
+	</div>
+
 	<!-- Plots and some other information -->
-	<div class="col">
+	<div class="col-4">
 	  <!-- Plotting Options -->
 	  <div class="mb-3 row">
 	    <label for="role-form" class="col-sm-3 col-form-label"> Realtime Plotting </label>
 	    <div class="col-sm-6">
 	      <select class="form-select" id="role-form">
-		<option selected value="csi"> 📡 Channel State Information </option>
-		<option value="fft"> 📶 Fast Fourier Transform </option>
+		<option selected value="csi"> Channel State Information </option>
+		<option value="fft"> Fast Fourier Transform </option>
 	      </select>
 	    </div>
 	  </div>
