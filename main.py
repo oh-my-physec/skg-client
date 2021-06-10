@@ -25,8 +25,14 @@ def static_assets(path):
     return send_from_directory("static", path)
 
 @socketio.on("connect")
-def socket_io_connected():
+def connected():
     print("websocket connected, with socket.id='{}'".format(request.sid))
+
+@socketio.on("ping")
+def usrp_test_connection(addr):
+    return {
+        "status": "fail",
+        "msg": "Cannot connect to usrp server: {}".format(addr["usrp_server_addr"]) }
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
