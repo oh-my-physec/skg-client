@@ -30,7 +30,8 @@
 	    <label for="usrp-server-addr-form" class="col-sm-4 col-form-label"> USRP Server Address </label>
 	    <div class="col-sm-8">
 	      <div class="input-group">
-		<input type="text" class="form-control" id="usrp-server-addr-form" value="192.168.10.3">
+		<span class="input-group-text"> tcp:// </span>
+		<input type="text" class="form-control" id="usrp-server-addr-form" value="127.0.0.1:5555">
 		<button type="button" class="btn btn-outline-dark" id="test-usrp-server-connection-button"
 			onclick="skg_usrp_server_test_connection()">
 		  Test Connection
@@ -41,9 +42,9 @@
 
 	  <!-- TX Antenna -->
 	  <div class="mb-3 row">
-	    <label for="tx-antenna-form" class="col-sm-4 col-form-label"> TX Antenna </label>
+	    <label for="usrp-tx-antenna-form" class="col-sm-4 col-form-label"> TX Antenna </label>
 	    <div class="col-sm-8">
-	      <select class="form-select" id="tx-antenna-form">
+	      <select class="form-select" id="usrp-tx-antenna-form">
 		<option selected value="txrx"> TX/RX </option>
 	      </select>
 	    </div>
@@ -51,10 +52,10 @@
 
 	  <!-- TX Gain -->
 	  <div class="mb-3 row">
-	    <label for="usrp-tx-gain-range-form" class="col-sm-4 col-form-label"> TX Gain </label>
+	    <label for="usrp-tx-gain-form" class="col-sm-4 col-form-label"> TX Gain </label>
 	    <div class="col-sm-8">
 	      <div class="input-group">
-		<input type="text" class="form-control" id="usrp-tx-gain-range-form" value="30">
+		<input type="text" class="form-control" id="usrp-tx-gain-form" value="30">
 		<span class="input-group-text"> dB </span>
 	      </div>
 	    </div>
@@ -62,10 +63,10 @@
 
 	  <!-- TX Sample rate -->
 	  <div class="mb-3 row">
-	    <label for="usrp-tx-rate-range-form" class="col-sm-4 col-form-label"> TX Rate </label>
+	    <label for="usrp-tx-rate-form" class="col-sm-4 col-form-label"> TX Rate </label>
 	    <div class="col-sm-8">
 	      <div class="input-group">
-		<input type="text" class="form-control" id="usrp-tx-rate-range-form" value="25000000">
+		<input type="text" class="form-control" id="usrp-tx-rate-form" value="25000000">
 		<span class="input-group-text"> samples/second </span>
 	      </div>
 	    </div>
@@ -73,10 +74,10 @@
 
 	  <!-- TX Bandwidth -->
 	  <div class="mb-3 row">
-	    <label for="usrp-tx-bw-form" class="col-sm-4 col-form-label"> TX Bandwidth </label>
+	    <label for="usrp-tx-bandwidth-form" class="col-sm-4 col-form-label"> TX Bandwidth </label>
 	    <div class="col-sm-8">
 	      <div class="input-group">
-		<input type="text" class="form-control" id="usrp-tx-bw-form" value="25000000">
+		<input type="text" class="form-control" id="usrp-tx-bandwidth-form" value="25000000">
 		<span class="input-group-text"> Hz </span>
 	      </div>
 	    </div>
@@ -95,10 +96,10 @@
 
 	  <!-- TX Samples Per Buffer -->
 	  <div class="mb-3 row">
-	    <label for="usrp-tx-spb-form" class="col-sm-4 col-form-label"> TX Samples/Buffer </label>
+	    <label for="usrp-tx-sample-per-buffer-form" class="col-sm-4 col-form-label"> TX Samples/Buffer </label>
 	    <div class="col-sm-8">
 	      <div class="input-group">
-		<input type="text" class="form-control" id="usrp-tx-spb-form" value="300000">
+		<input type="text" class="form-control" id="usrp-tx-sample-per-buffer-form" value="300000">
 		<span class="input-group-text"> samples/buffer </span>
 	      </div>
 	    </div>
@@ -106,9 +107,9 @@
 
 	  <!-- RX Antenna -->
 	  <div class="mb-3 row">
-	    <label for="rx-antenna-form" class="col-sm-4 col-form-label"> RX Antenna </label>
+	    <label for="usrp-rx-antenna-form" class="col-sm-4 col-form-label"> RX Antenna </label>
 	    <div class="col-sm-8">
-	      <select class="form-select" id="rx-antenna-form">
+	      <select class="form-select" id="usrp-rx-antenna-form">
 		<option selected value="txrx"> TX/RX </option>
 		<option value="rx2"> RX2 </option>
 	      </select>
@@ -117,10 +118,10 @@
 
 	  <!-- RX Gain -->
 	  <div class="mb-3 row">
-	    <label for="usrp-rx-gain-range-form" class="col-sm-4 col-form-label"> RX Gain </label>
+	    <label for="usrp-rx-gain-form" class="col-sm-4 col-form-label"> RX Gain </label>
 	    <div class="col-sm-8">
 	      <div class="input-group">
-		<input type="text" class="form-control" id="usrp-rx-gain-range-form" value="30">
+		<input type="text" class="form-control" id="usrp-rx-gain-form" value="30">
 		<span class="input-group-text"> dB </span>
 	      </div>
 	    </div>
@@ -128,10 +129,10 @@
 
 	  <!-- RX Sample rate -->
 	  <div class="mb-3 row">
-	    <label for="usrp-rx-rate-range-form" class="col-sm-4 col-form-label"> RX Rate </label>
+	    <label for="usrp-rx-rate-form" class="col-sm-4 col-form-label"> RX Rate </label>
 	    <div class="col-sm-8">
 	      <div class="input-group">
-		<input type="text" class="form-control" id="usrp-rx-rate-range-form" value="25000000">
+		<input type="text" class="form-control" id="usrp-rx-rate-form" value="25000000">
 		<span class="input-group-text"> samples/second </span>
 	      </div>
 	    </div>
@@ -139,10 +140,10 @@
 
 	  <!-- RX Bandwidth -->
 	  <div class="mb-3 row">
-	    <label for="usrp-rx-bw-form" class="col-sm-4 col-form-label"> RX Bandwidth </label>
+	    <label for="usrp-rx-bandwidth-form" class="col-sm-4 col-form-label"> RX Bandwidth </label>
 	    <div class="col-sm-8">
 	      <div class="input-group">
-		<input type="text" class="form-control" id="usrp-rx-bw-form" value="25000000">
+		<input type="text" class="form-control" id="usrp-rx-bandwidth-form" value="25000000">
 		<span class="input-group-text"> Hz </span>
 	      </div>
 	    </div>
@@ -161,10 +162,10 @@
 
 	  <!-- RX Samples Per Buffer -->
 	  <div class="mb-3 row">
-	    <label for="usrp-rx-spb-form" class="col-sm-4 col-form-label"> RX Samples/Buffer </label>
+	    <label for="usrp-rx-sample-per-buffer-form" class="col-sm-4 col-form-label"> RX Samples/Buffer </label>
 	    <div class="col-sm-8">
 	      <div class="input-group">
-		<input type="text" class="form-control" id="usrp-rx-spb-form" value="300000">
+		<input type="text" class="form-control" id="usrp-rx-sample-per-buffer-form" value="300000">
 		<span class="input-group-text"> samples/buffer </span>
 	      </div>
 	    </div>

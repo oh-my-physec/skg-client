@@ -31,6 +31,16 @@ class Message:
         }
         return json.dumps(message_dict, separators=(",", ":"))
 
+    def to_bytes(self):
+        encoded = self.to_json().encode("utf-8")
+        return bytearray(encoded)
+
+PingMessage = Message(1, MessageType.MT_PING, [])
+LoadConfigMessage = lambda msg_id, fields : \
+    Message(msg_id, MessageType.MT_CONF, [{"key" : x, "val" : ""} for x in fields])
+UpdateConfigMessage = lambda msg_id, fields : \
+    Message(msg_id, MessageType.MT_CONF, [{"key" : k, "val" : fields[k]} for k in fields])
+
 if __name__ == "__main__":
     invalid_msg = Message(message_type=MessageType.MT_INVALID)
     assert(invalid_msg.to_json() == '{"id":0,"type":1,"payload":[]}')
