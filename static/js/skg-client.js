@@ -26,6 +26,10 @@ function get_element_value_or(ele_id, fallback) {
     return ele.value.trim();
 }
 
+function set_element_value(ele_id, val) {
+    document.getElementById(ele_id).value = val;
+}
+
 // These fields should be consistent with definitions in
 // https://github.com/oh-my-physec/usrp-server/blob/69722b78e6755f5ec8222a22d6e778b0ae7802b7/src/usrp.cc#L130
 const usrp_server_config_name_mapping = {
@@ -175,14 +179,22 @@ const usrp_server_config_name_mapping = {
 	    return `1,${tx_prefix_sine_length},SINE,${tx_prefix_sine_periods}`;
 	},
     },
+    "clock_source": {
+	setter: (val) => {
+	    /* Do nothing. */
+	},
+	getter: () => {
+	    return "internal";
+	}
+    }
 };
 
-function skg_usrp_server_test_connection() {
+function usrp_server_test_connection(addr_ele_id) {
     if (!socket.connected) {
 	alert_error("socket.io is not connected");
     }
 
-    const addr = get_element_value_or("usrp-server-addr-form", "");
+    const addr = get_element_value_or(addr_ele_id, "");
     if (addr == "") {
 	alert_error("Please specify 'USRP Server Address'");
 	return;
@@ -197,7 +209,15 @@ function skg_usrp_server_test_connection() {
     });
 }
 
-function skg_load_config() {
+function skg_usrp_server_test_connection() {
+    usrp_server_test_connection("usrp-server-addr-form");
+}
+
+function skg_skg_client_usrp_server_test_connection() {
+    usrp_server_test_connection("skg-client-usrp-server-addr-form");
+}
+
+function skg_load_usrp_server_config() {
     const addr = get_element_value_or("usrp-server-addr-form", "");
     if (addr == "") {
 	alert_error("Please specify 'USRP Server Address'");
@@ -219,7 +239,7 @@ function skg_load_config() {
     });
 }
 
-function skg_update_config() {
+function skg_update_usrp_server_config() {
     const addr = get_element_value_or("usrp-server-addr-form", "");
     if (addr == "") {
 	alert_error("Please specify 'USRP Server Address'");
@@ -243,18 +263,155 @@ function skg_update_config() {
     });
 }
 
-function skg_reset_config() {
-    alert_info("Config is reset");
-}
-
-function skg_shutdown_all_jobs() {
+function skg_shutdown_usrp_server_all_jobs() {
     alert_info("All jobs is stopped");
 }
 
-function skg_peer_server_test_connection() {
-    alert_info("Peer Server is connected");
+function skg_load_client_config() {
+    if (document.getElementById("sync-with-client-config") &&
+	document.getElementById("sync-with-client-config").checked) {
+	socket.emit("skg_client_load_config", {}, (resp) => {
+	    set_element_value("skg-client-role-form", resp.role);
+	    set_element_value("skg-client-peer-server-addr-form", resp.peer_server_addr);
+	    set_element_value("skg-client-usrp-server-addr-form", resp.usrp_server_addr);
+	    set_element_value("tx-waveform-form", resp.send_waveform_from);
+	    set_element_value("csi-directory-form", resp.save_csi_to);
+	    set_element_value("waveform-directory-form", resp.save_waveform_to);
+	    set_element_value("generated-key-directory-form", resp.save_generated_key_to);
+	    set_element_value("key-agreement-protocol-frequency-form", resp.key_agreement_proto_frequency);
+	});
+    }
 }
 
-function skg_skg_platform_server_test_connection() {
-    alert_info("SKG Platform Server is connected");
+// Update SKG client config per 3s.
+window.addEventListener('load', (event) => {
+    skg_load_client_config();
+});
+setInterval(() => {
+    skg_load_client_config();
+}, 3000)
+
+function skg_update_client_config() {
+    const role = get_element_value_or("skg-client-role-form", "");
+    const peer_server_addr = get_element_value_or("skg-client-peer-server-addr-form", "");
+    const usrp_server_addr = get_element_value_or("skg-client-usrp-server-addr-form", "");
+    const send_waveform_from = get_element_value_or("tx-waveform-form", "");
+    const save_csi_to = get_element_value_or("csi-directory-form", "");
+    const save_waveform_to = get_element_value_or("waveform-directory-form", "");
+    const save_generated_key_to = get_element_value_or("generated-key-directory-form", "");
+    const key_agreement_proto_frequency = get_element_value_or("key-agreement-protocol-frequency-form", "");
+    socket.emit("skg_client_update_config", {
+	role: role,
+	peer_server_addr: peer_server_addr,
+	usrp_server_addr: usrp_server_addr,
+	send_waveform_from: send_waveform_from,
+	save_csi_to: save_csi_to,
+	save_waveform_to: save_waveform_to,
+	save_generated_key_to: save_generated_key_to,
+	key_agreement_proto_frequency: key_agreement_proto_frequency,
+	
+    }, (resp) => {
+	if (resp.status != "ok") {
+	    alert_error(resp.explain);
+	} else {
+	    alert_info("Client's config is updated")
+	}
+    });
 }
+
+function skg_start() {
+    const addr = get_element_value_or("usrp-server-addr-form", "");
+    if (addr == "") {
+	alert_error("Please specify 'USRP Server Address'");
+	return;
+    }
+
+    socket.emit("skg_start", {
+	usrp_server_addr: "tcp://" + addr,
+    }, (resp) => {
+	if (resp.status != "ok") {
+	    alert_error(resp.explain);
+	} else {
+	    alert_info("Started!");
+	}
+    });
+}
+
+function skg_stop() {
+    socket.emit("skg_stop", {
+    }, (resp) => {
+	if (resp.status != "ok") {
+	    alert_error(resp.explain);
+	} else {
+	    alert_info("Stopped!");
+	}
+    })
+}
+
+let privacy_mode = false;
+
+function skg_toggle_privacy_mode() {
+    if (privacy_mode == false) {
+	privacy_mode = true;
+	document.body.style.filter = "blur(8px)";
+    } else {
+	privacy_mode = false;
+	document.body.style.filter = "";
+    }
+}
+
+function skg_peer_server_connection_test() {
+    const addr = get_element_value_or("skg-client-peer-server-addr-form", "");
+    if (addr == "") {
+	alert_error("Please specify 'Peer Server Address'");
+	return;
+    }
+    socket.emit("skg_peer_server_ping", {
+	peer_server_addr: "http://" + addr,
+    }, (resp) => {
+	if (resp.status != "ok") {
+	    alert_error(resp.explain);
+	} else {
+	    alert_info("Peer server is connected");
+	}
+    });
+}
+
+socket.on("csi", (csi) => {
+    const canvas = document.getElementById('plotly-canvas-csi');
+    const layout = {
+	margin: {t:0,r:0,b:0,l:20},
+	xaxis: {
+	    automargin: true,
+	    rangemode: "tozero",
+	    tickangle: 0,
+	    title: {
+		text: "Subcarrier Index",
+		font: {
+		    size: 20,
+		},
+		standoff: 10
+	    }},
+	yaxis: {
+	    automargin: true,
+	    rangemode: "tozero",
+	    tickangle: 0,
+	    font: {
+		size: 15,
+	    },
+	    title: {
+		text: "Amplitude",
+		font: {
+		    size: 20,
+		},
+		standoff: 20
+	    }}
+    };
+    Plotly.newPlot(canvas, [{
+	line: {
+	    color: "rgb(142, 124, 195)",
+	    width: 4,
+	},
+	y : csi,
+    }], layout);
+});

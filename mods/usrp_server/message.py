@@ -40,6 +40,8 @@ LoadConfigMessage = lambda msg_id, fields : \
     Message(msg_id, MessageType.MT_CONF, [{"key" : x, "val" : ""} for x in fields])
 UpdateConfigMessage = lambda msg_id, fields : \
     Message(msg_id, MessageType.MT_CONF, [{"key" : k, "val" : fields[k]} for k in fields])
+TaskMessage = lambda msg_id, args : \
+    Message(msg_id, MessageType.MT_WORK, [{"key" : k, "val" : args[k]} for k in args])
 
 if __name__ == "__main__":
     invalid_msg = Message(message_type=MessageType.MT_INVALID)
