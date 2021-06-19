@@ -267,6 +267,8 @@ class SKGClient:
                 pp = PPMod(self.get_send_waveform_from())
                 save_waveform_to = self.get_save_waveform_to() + "waveform_{}.data".format(interaction_index)
                 csi = pp.process(save_waveform_to)
+                if len(csi) == 0:
+                    return STATUS_OK
                 self._socketio.emit("csi", csi)
                 return STATUS_OK
             return failed_with_explain("Unknown error")
