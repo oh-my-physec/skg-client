@@ -49,4 +49,4 @@ write_complex_binary(data, '/tmp/waveform.data');
 
 ### 截图
 
-![](.screenshots/skg-client.png)
+![](.screenshots/skg-client.jpg)
